@@ -3,6 +3,18 @@ import foodModel from "../Model/foodModel.js";
 import userModel from "../Model/userModel.js";
 import crypto from "crypto";
 import bcrypt from "bcrypt";
+import cron from "node-cron";
+
+cron.schedule("2 16 * * *", () => {
+  (async () => {
+    try {
+      await foodModel.deleteMany({ status: "Expired" });
+      // console.log("cycle executed!");
+    } catch (error) {
+      console.log(error);
+    }
+  })();
+});
 
 const location = async (req, res) => {
   try {
